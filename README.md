@@ -1,3 +1,5 @@
+## Projeto criado para fazer o backend do projeto de Tweeter Clone do curso B7web
+
 - npm init
 - npm i -D typescript tsx
 - npx tsc --init
@@ -45,3 +47,5 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 - dar um migrate
   - npx prisma migrate dev || npx prisma migrate dev --name init
   - npx prisma generate
+
+- criar as rotas
