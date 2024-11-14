@@ -49,3 +49,5 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
   - npx prisma generate
 
 - criar as rotas
+- npm i zod slug bcrypt-ts jsonwebtoken
+- npm i -D @types/slug @types/jsonwebtoken
