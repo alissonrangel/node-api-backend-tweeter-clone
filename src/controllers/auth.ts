@@ -6,21 +6,22 @@ import { compare, hash } from "bcrypt-ts";
 import { createJWT } from "../utils/jwt";
 import { signinSchema } from "../schemas/signin";
 
+// export const signup: RequestHandler = async (req, res) => {
 export const signup = async (req: Request, res: Response) => {
 
   // validar os dados recebidos
   const safeData = signupSchema.safeParse(req.body);
-  if(!safeData.success){
-    return res.json({error: safeData.error.flatten().fieldErrors})
+  if (!safeData.success) {
+    return res.json({ error: safeData.error.flatten().fieldErrors })
   }
-  
+
   // ferificar email
   const hasEmail = await findUserByEmail(safeData.data.email)
 
   if (hasEmail) {
-    return res.json({error: "E-mail já existe!"});
+    return res.json({ error: "E-mail já existe!" });
   }
-  
+
   // verificar slug
   let genSlug = true
   let userSlug = slug(safeData.data.name);
@@ -33,7 +34,7 @@ export const signup = async (req: Request, res: Response) => {
       genSlug = false
     }
   }
-  
+
   // gerar hash de senha
   const hashPassword = await hash(safeData.data.password, 11)
 
@@ -63,7 +64,7 @@ export const signin = async (req: Request, res: Response) => {
 
   const safeData = signinSchema.safeParse(req.body);
   if(!safeData.success){
-    return res.json({error: safeData.error.flatten().fieldErrors})
+    return res.json({ error: safeData.error.flatten().fieldErrors })
   }
 
   const user = await findUserByEmail(safeData.data.email)
@@ -75,8 +76,6 @@ export const signin = async (req: Request, res: Response) => {
 
   console.log(safeData.data.password);
   console.log(user.password);
-  
-  
 
   if (!verifyPass) {
     return res.status(401).json({ error: "Acesso negado!" });
