@@ -1,6 +1,7 @@
 import { number } from "zod";
 import { prisma } from "../utils/prisma"
 import { getPublicURL } from "../utils/url";
+import slug from "slug";
 
 
 export const findTweet = async (id: number) => {
@@ -98,4 +99,22 @@ export const likeTweet = async (slug:string, id: number) => {
       tweetId: id
     }
   })
+}
+
+export const findTweetsByUser = async ( slug: string, currentPage: number, perPage: number) => {
+  const tweets = await prisma.tweet.findMany({
+    include: {
+      likes: {
+        select: {
+          userSlug: true
+        }
+      }
+    },
+    where: { userSlug: slug, answerOf: 0 },
+    orderBy: { createdAt: "desc"},
+    skip: currentPage * perPage,
+    take: perPage
+  });
+
+  return tweets;
 }
