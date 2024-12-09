@@ -1,6 +1,6 @@
 import { Response } from "express";
 import { ExtendedRequest } from "../types/extended-request";
-import { findUserBySlug, getUserFollowersCount, getUserFollowingCount, getUserTweetCount } from "../services/user";
+import { checkIfFollows, findUserBySlug, follow, getUserFollowersCount, getUserFollowingCount, getUserTweetCount, unfollow } from "../services/user";
 import { userTweetsSchema } from "../schemas/user-tweets";
 import { findTweetsByUser } from "../services/tweet";
 
@@ -36,4 +36,23 @@ export const getUserTweets = async (req: ExtendedRequest, res: Response) => {
   const tweets = await findTweetsByUser(slug, currentPage, perPage);
 
   res.json( {tweets, page: currentPage} );
+}
+
+export const followToggle = async (req: ExtendedRequest, res: Response) => {
+  const { slug } = req.params;
+
+  const me = req.userSlug as string;
+
+  const hasUserToBeFollowed = await findUserBySlug(slug);
+
+  if (!hasUserToBeFollowed) return res.json({ error: 'Usuário inexistente' });
+
+  const follows = await checkIfFollows(me, slug);
+  if (!follows) {
+      await follow(me, slug);
+      res.json({ following: true });
+  } else {
+      await unfollow(me, slug);
+      res.json({ following: false });
+  }
 }
