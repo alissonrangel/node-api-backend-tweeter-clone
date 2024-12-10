@@ -84,19 +84,17 @@ export const getUserFollowersCount = async (slug:string) => {
 }
 
 export const getUserTweetCount = async (slug:string) => {
-  
   const count = await prisma.tweet.count({
     where:{
       userSlug: slug
     }
   });
-
   return count;
 }
 
 export const checkIfFollows = async (user1Slug: string, user2Slug: string) => {
   const follows = await prisma.follow.findFirst({
-      where: { user1Slug, user2Slug }
+    where: { user1Slug, user2Slug }
   });
   return follows ? true : false;
 }
@@ -104,12 +102,19 @@ export const checkIfFollows = async (user1Slug: string, user2Slug: string) => {
 //fazer o user 1 seguir o user 2
 export const follow = async (user1Slug: string, user2Slug: string) => {
   await prisma.follow.create({
-      data: { user1Slug, user2Slug }
+    data: { user1Slug, user2Slug }
   });
 }
 
 export const unfollow = async (user1Slug: string, user2Slug: string) => {
   await prisma.follow.deleteMany({
-      where: { user1Slug, user2Slug }
+    where: { user1Slug, user2Slug }
+  });
+}
+
+export const updateUserInfo = async (slug: string, data: Prisma.UserUpdateInput) => {
+  await prisma.user.update({
+    where: { slug },
+    data
   });
 }
