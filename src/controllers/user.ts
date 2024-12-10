@@ -47,6 +47,7 @@ export const followToggle = async (req: ExtendedRequest, res: Response) => {
 
   if (!hasUserToBeFollowed) return res.json({ error: 'Usuário inexistente' });
 
+  //slug -> cara que eu quero seguir
   const follows = await checkIfFollows(me, slug);
   if (!follows) {
       await follow(me, slug);

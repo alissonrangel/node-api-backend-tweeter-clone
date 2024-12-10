@@ -101,6 +101,7 @@ export const checkIfFollows = async (user1Slug: string, user2Slug: string) => {
   return follows ? true : false;
 }
 
+//fazer o user 1 seguir o user 2
 export const follow = async (user1Slug: string, user2Slug: string) => {
   await prisma.follow.create({
       data: { user1Slug, user2Slug }
