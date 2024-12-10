@@ -118,3 +118,15 @@ export const updateUserInfo = async (slug: string, data: Prisma.UserUpdateInput)
     data
   });
 }
+
+export const getUserFollowing = async (slug: string) => {
+  const following = [];
+  const reqFollow = await prisma.follow.findMany({
+    select: { user2Slug: true },
+    where: { user1Slug: slug }
+  });
+  for (let reqItem of reqFollow) {
+    following.push(reqItem.user2Slug);
+  }
+  return following;
+}

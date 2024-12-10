@@ -31,7 +31,7 @@ export const getUserTweets = async (req: ExtendedRequest, res: Response) => {
     return res.json({ error: safeData.error.flatten().fieldErrors })
   }
 
-  let perPage = 1
+  let perPage = 4
   let currentPage = safeData.data.page ?? 0
 
   const tweets = await findTweetsByUser(slug, currentPage, perPage);
